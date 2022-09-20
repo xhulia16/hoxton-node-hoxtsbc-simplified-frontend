@@ -15,11 +15,19 @@ type User = {
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  function LogInUser(user: User) {
+    setCurrentUser(user);
+  }
+
+  function LogOutuser() {
+    setCurrentUser(null);
+  }
+
   return (
     <div className="App">
       <header>
         <Link to="/home">
-        <h1>Hoxt-SBC</h1>
+          <h1>Hoxt-SBC</h1>
         </Link>
 
         {currentUser ? (
@@ -40,7 +48,7 @@ function App() {
           <Route index element={<Navigate to="/home" />} />
           <Route path="/home" element={<Transactions />}></Route>
           <Route path="/logIn" element={<LogIn />}></Route>
-          <Route path="/signUp" element={<SignUp />}></Route>
+          <Route path="/signUp" element={<SignUp LogInUser={LogInUser}/>}></Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
