@@ -8,14 +8,25 @@
 
 header{
   display: grid;
+  grid-auto-flow: column;
   background-color: brown;
   position:fixed;
   top:0;
   width:100%;
   height: 70px;
- justify-content: center;
+  padding-left: 40px;
  align-items: center;
  color: rgb(255, 255, 255);
+ gap: 20px;
+}
+
+.user-actions{
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: right;
+  gap: 20px;
+  width: 100%;
+  padding-right: 40px;
 }
 
 main{
@@ -46,4 +57,9 @@ button{
 
 input{
   text-align: center;
+}
+
+a{
+  text-decoration: none;
+  color:white
 }
