@@ -27,12 +27,12 @@ export function SignUp({LogInUser}: Props){
             body: JSON.stringify(signUpDetails)
           })
           .then(resp=>resp.json())
-          .then(user=> {
-            if(user.error){
-              alert(user.error)
+          .then(data=> {
+            if(data.error){
+              alert(data.error)
             }
             else{
-              LogInUser(user)
+              LogInUser(data)
             }
           })
           .then(data=> navigate("/home"))

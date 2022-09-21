@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { LogIn } from "./pages/LoginForm";
@@ -18,13 +18,35 @@ function App() {
 
   window.currentUser=currentUser
 
-  function LogInUser(user: User) {
-    setCurrentUser(user);
+  function LogInUser(data) {
+    setCurrentUser(data.user);
+    localStorage.token= data.token
+
   }
 
   function logOutUser() {
     setCurrentUser(null);
+    localStorage.removeItem('token')
   }
+
+useEffect(()=>{
+  if(localStorage.token){
+    fetch(`http://localhost:5000/validate`, {
+      headers: {
+        Authorization: localStorage.token 
+      }
+    })
+    .then(resp=>resp.json())
+    .then(data=>{
+      if(data.error){
+        alert(data.error)
+      }
+      else{
+        LogInUser(data)
+      }
+    })
+  }
+},[])
 
   return (
     <div className="App">
