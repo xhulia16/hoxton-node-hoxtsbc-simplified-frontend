@@ -1,13 +1,39 @@
-export function LogIn() {
+import { useNavigate } from "react-router-dom";
+
+type Props = {
+  LogInUser: (user: User) => void;
+};
+
+export function LogIn({ LogInUser }: Props) {
+  let navigate = useNavigate();
+
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
+        
         const logInDetails = {
           email: event.target.email.value,
           password: event.target.password.value,
         };
+
         console.log(logInDetails);
+        fetch("http://localhost:5000/log-in", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(logInDetails),
+        })
+          .then((resp) => resp.json())
+          .then((user) => {
+            if (user.error) {
+              alert(user.error);
+            } else {
+              LogInUser(user);
+            }
+          })
+          .then((data) => navigate("/home"));
         event.target.reset();
       }}
     >

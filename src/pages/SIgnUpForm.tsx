@@ -1,12 +1,20 @@
+import {useNavigate } from "react-router-dom";
+import { User } from "../App";
 
+type Props={
+  LogInUser: (user: User)=> void
+}
 
-export function SignUp({LogInUser}){
+export function SignUp({LogInUser}: Props){
+  
+  let navigate = useNavigate();
+
     return(
         <form
         onSubmit={(event) => {
           event.preventDefault();
 
-          const logInDetails = {
+          const signUpDetails = {
             email: event.target.email.value,
             password: event.target.password.value,
           };
@@ -16,11 +24,20 @@ export function SignUp({LogInUser}){
             headers:{
               "content-type": "application/json"
             }, 
-            body: JSON.stringify(logInDetails)
+            body: JSON.stringify(signUpDetails)
           })
           .then(resp=>resp.json())
+          .then(user=> {
+            if(user.error){
+              alert(user.error)
+            }
+            else{
+              LogInUser(user)
+            }
+          })
+          .then(data=> navigate("/home"))
 
-          console.log(logInDetails);
+          console.log(signUpDetails);
           event.target.reset();
         }}
       >
