@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { User } from "../App";
 
 type Props = {
   LogInUser: (user: User) => void;
 };
 
 export function LogIn({ LogInUser }: Props) {
-  let navigate = useNavigate();
 
   return (
     <form
@@ -33,7 +33,7 @@ export function LogIn({ LogInUser }: Props) {
               LogInUser(user);
             }
           })
-          .then((data) => navigate("/home"));
+
         event.target.reset();
       }}
     >

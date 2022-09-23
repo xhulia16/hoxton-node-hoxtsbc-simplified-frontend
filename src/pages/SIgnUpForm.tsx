@@ -7,8 +7,6 @@ type Props={
 
 export function SignUp({LogInUser}: Props){
   
-  let navigate = useNavigate();
-
     return(
         <form
         onSubmit={(event) => {
@@ -35,7 +33,6 @@ export function SignUp({LogInUser}: Props){
               LogInUser(data)
             }
           })
-          .then(data=> navigate("/home"))
 
           console.log(signUpDetails);
           event.target.reset();

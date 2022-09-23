@@ -63,3 +63,18 @@ a{
   text-decoration: none;
   color:white
 }
+
+.transactions{
+  list-style: none;
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.transactions li{
+  border: 1px solid black; 
+}
+
+.transactions-list{
+  display: grid;
+  gap:10px;
+}

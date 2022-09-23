@@ -6,47 +6,58 @@ import { PageNotFound } from "./pages/PageNotFound";
 import { SignUp } from "./pages/SIgnUpForm";
 import { Transactions } from "./pages/Transactions";
 
+export type Transaction = {
+  id: number;
+  date: string;
+  description: string;
+  withdrawals: number;
+  deposits: number;
+  balance: number;
+  userId: number;
+};
+
 export type User = {
   id: number;
   email: string;
   password: string;
+  transactions: Transaction[];
 };
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  let navigate= useNavigate()
+  let navigate = useNavigate();
 
-  window.currentUser=currentUser
+  window.currentUser = currentUser;
 
   function LogInUser(data) {
     setCurrentUser(data.user);
-    localStorage.token= data.token
-
+    localStorage.token = data.token;
+    navigate("/home");
   }
 
   function logOutUser() {
     setCurrentUser(null);
-    localStorage.removeItem('token')
+    localStorage.removeItem("token");
+    navigate("/logIn");
   }
 
-useEffect(()=>{
-  if(localStorage.token){
-    fetch(`http://localhost:5000/validate`, {
-      headers: {
-        Authorization: localStorage.token 
-      }
-    })
-    .then(resp=>resp.json())
-    .then(data=>{
-      if(data.error){
-        alert(data.error)
-      }
-      else{
-        LogInUser(data)
-      }
-    })
-  }
-},[])
+  useEffect(() => {
+    if (localStorage.token) {
+      fetch(`http://localhost:5000/validate`, {
+        headers: {
+          Authorization: localStorage.token,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          } else {
+            LogInUser(data);
+          }
+        });
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -56,10 +67,13 @@ useEffect(()=>{
         </Link>
 
         {currentUser ? (
-          <button onClick={()=>{
-            logOutUser()
-            navigate('/home')
-          }}>LogOut</button>
+          <button
+            onClick={() => {
+              logOutUser();
+            }}
+          >
+            LogOut
+          </button>
         ) : (
           <div className="user-actions">
             <Link to="/logIn">
@@ -74,9 +88,18 @@ useEffect(()=>{
       <main>
         <Routes>
           <Route index element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Transactions />}></Route>
-          <Route path="/logIn" element={<LogIn LogInUser={LogInUser} />}></Route>
-          <Route path="/signUp" element={<SignUp LogInUser={LogInUser}/>}></Route>
+          <Route
+            path="/home"
+            element={<Transactions user={currentUser} />}
+          ></Route>
+          <Route
+            path="/logIn"
+            element={<LogIn LogInUser={LogInUser} />}
+          ></Route>
+          <Route
+            path="/signUp"
+            element={<SignUp LogInUser={LogInUser} />}
+          ></Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </main>
